@@ -2009,61 +2009,40 @@
 
 // 📋 PASO 1: IDs de YouTube
 document.addEventListener("DOMContentLoaded", () => {
-  let player;
-  let indiceActual = 0;
+let player;
+let playerCreado = false;
 
-  const canciones = [
-    'sCBrMvSzb8Q',
-    'qxrk1XWqfu4',
-    'f2vZJiBFAcQ',
-    'WJlQ4jt5Fz4'
-  ];
+const sobre = document.getElementById("sobre");
+const contenido = document.getElementById("contenido");
 
-  function onYouTubeIframeAPIReady() {
+sobre.addEventListener("click", () => {
+
+  // 🎵 crear y reproducir música SOLO en el click
+  if (!playerCreado && window.YT) {
     player = new YT.Player('yt-player', {
       height: '0',
       width: '0',
-      videoId: canciones[indiceActual],
+      videoId: 'sCBrMvSzb8Q', // primera canción
       playerVars: {
-        autoplay: 0,
+        autoplay: 1,
         controls: 0,
         rel: 0
-      },
-      events: {
-        onStateChange: onPlayerStateChange
       }
     });
+    playerCreado = true;
   }
 
-  function onPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.ENDED) {
-      indiceActual++;
-      if (indiceActual < canciones.length) {
-        player.loadVideoById(canciones[indiceActual]);
-      }
-    }
-  }
-    const sobre = document.getElementById("sobre");
-  const contenido = document.getElementById("contenido");
+  // 💌 tu animación del sobre (no se toca)
+  sobre.style.opacity = "0";
+  setTimeout(() => {
+    sobre.style.display = "none";
+    contenido.style.display = "block";
+    requestAnimationFrame(() => {
+      contenido.style.opacity = "1";
+    });
+  }, 1000);
+});
 
-  sobre.addEventListener("click", () => {
-
-    // 🎵 arrancar música
-    if (player && player.playVideo) {
-      player.playVideo();
-    }
-
-    // 💌 tu código original del sobre (NO se cambia)
-    sobre.style.opacity = "0";
-    setTimeout(() => {
-      sobre.style.display = "none";
-      contenido.style.display = "block";
-      requestAnimationFrame(() => {
-        contenido.style.opacity = "1";
-      });
-    }, 1000);
-
-  });
   });
 </script>
 
@@ -2073,4 +2052,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 </body>
+
 </html>
